@@ -1,13 +1,5 @@
-/**
- * Analytics Controller
- * All queries use MongoDB aggregation pipeline for efficiency.
- * Single endpoint returns all analytics data in one round-trip.
- */
 const Job = require('../models/Job');
 
-// @desc   Get full analytics data for current user
-// @route  GET /api/analytics/
-// @access Private
 const getAnalytics = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -18,14 +10,12 @@ const getAnalytics = async (req, res) => {
       topCompanies,
       totals,
     ] = await Promise.all([
-      // ── 1. Applications by status ────────────────────────────────────────
       Job.aggregate([
         { $match: { user: userId } },
         { $group: { _id: '$status', count: { $sum: 1 } } },
         { $sort: { count: -1 } },
       ]),
 
-      // ── 2. Applications per month (last 12 months) ────────────────────────
       Job.aggregate([
         {
           $match: {
@@ -64,7 +54,6 @@ const getAnalytics = async (req, res) => {
         { $project: { _id: 0, company: '$_id', count: 1 } },
       ]),
 
-      // ── 4. Totals for KPI cards ───────────────────────────────────────────
       Job.aggregate([
         { $match: { user: userId } },
         {
@@ -88,7 +77,6 @@ const getAnalytics = async (req, res) => {
       ]),
     ]);
 
-    // Format monthly data — fill in missing months with 0
     const monthlyMap = {};
     applicationsPerMonth.forEach(({ year, month, count }) => {
       monthlyMap[`${year}-${month}`] = count;

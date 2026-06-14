@@ -1,7 +1,15 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    
+    localStorage.removeItem('jt_token');
+    localStorage.removeItem('jt_user');    
+    navigate('/login');
+  };
 
   const isActive = (path) => {
     if (path === '/') return location.pathname === '/';
@@ -28,6 +36,13 @@ export default function Navbar() {
             <Link to="/analytics" className={linkClass('/analytics')}>Analytics</Link>
           </div>
         </div>
+
+        <button 
+          onClick={handleLogout}
+          className="text-slate-400 hover:text-red-400 text-sm font-medium transition-colors px-3 py-2"
+        >
+          Logout
+        </button>
       </div>
     </nav>
   );

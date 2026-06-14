@@ -7,7 +7,6 @@ import Toast from '../components/common/Toast';
 import ConfirmModal from '../components/common/ConfirmModal';
 import { formatDate } from '../utils/constants';
 
-// ─── Sub-components ───────────────────────────────────────────────────────────
 
 function SectionHeader({ title, icon }) {
   return (
@@ -18,10 +17,7 @@ function SectionHeader({ title, icon }) {
   );
 }
 
-// ── Notes Panel ───────────────────────────────────────────────────────────────
-// Primary section of the Job Detail page. Supports add / edit / delete with
-// optimistic, immediate list updates (no page refresh) and per-action loading
-// feedback on buttons.
+
 function NotesPanel({ jobId, notes, onUpdate, onError }) {
   const [text, setText] = useState('');
   const [adding, setAdding] = useState(false);
@@ -84,7 +80,6 @@ function NotesPanel({ jobId, notes, onUpdate, onError }) {
     }
   };
 
-  // Sort newest first so the most recent note is always visible up top
   const sortedNotes = [...notes].sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
@@ -95,7 +90,6 @@ function NotesPanel({ jobId, notes, onUpdate, onError }) {
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
       } />
 
-      {/* Add note */}
       <div className="flex flex-col sm:flex-row gap-2 mb-5">
         <textarea
           value={text}
@@ -118,7 +112,6 @@ function NotesPanel({ jobId, notes, onUpdate, onError }) {
         </button>
       </div>
 
-      {/* Notes list */}
       <div className="space-y-3">
         {sortedNotes.length === 0 && (
           <div className="text-center py-8">
@@ -201,7 +194,6 @@ function NotesPanel({ jobId, notes, onUpdate, onError }) {
   );
 }
 
-// ── Interview Questions Panel ─────────────────────────────────────────────────
 function QuestionsPanel({ jobId, questions, onUpdate, onError }) {
   const [text, setText] = useState('');
   const [adding, setAdding] = useState(false);
@@ -281,7 +273,6 @@ function QuestionsPanel({ jobId, questions, onUpdate, onError }) {
   );
 }
 
-// ── Main Page ─────────────────────────────────────────────────────────────────
 export default function JobDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -317,14 +308,12 @@ export default function JobDetailPage() {
         </div>
       )}
 
-      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
         <Link to="/jobs" className="hover:text-slate-300 transition-colors">Applications</Link>
         <span>/</span>
         <span className="text-slate-300 truncate">{job.position} at {job.company}</span>
       </div>
 
-      {/* Header card */}
       <div className="card p-6 mb-6">
         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
           <div className="w-12 h-12 rounded-xl bg-surface-muted flex items-center justify-center text-xl font-bold text-slate-300 flex-shrink-0">
@@ -352,7 +341,6 @@ export default function JobDetailPage() {
         </div>
       </div>
 
-      {/* Notes — primary, full-width section */}
       <div className="space-y-5">
         <NotesPanel jobId={id} notes={job.richNotes || []} onUpdate={handleUpdate} onError={showError} />
         <QuestionsPanel jobId={id} questions={job.interviewQuestions || []} onUpdate={handleUpdate} onError={showError} />

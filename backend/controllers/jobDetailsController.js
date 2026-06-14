@@ -1,23 +1,11 @@
-/**
- * Job Details Controller
- * Handles rich notes, interview questions, and document references
- * All routes are scoped under /api/jobs/:id/...
- */
 const Job = require('../models/Job');
 
-// ─── Helper ──────────────────────────────────────────────────────────────────
 const findOwnedJob = async (jobId, userId) => {
   const job = await Job.findOne({ _id: jobId, user: userId });
   return job; // null if not found / not owned
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// NOTES
-// ════════════════════════════════════════════════════════════════════════════
 
-// @desc   Add a note to a job
-// @route  POST /api/jobs/:id/notes/
-// @access Private
 const addNote = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -39,9 +27,6 @@ const addNote = async (req, res) => {
   }
 };
 
-// @desc   Update a note
-// @route  PUT /api/jobs/:id/notes/:noteId
-// @access Private
 const updateNote = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -65,9 +50,7 @@ const updateNote = async (req, res) => {
   }
 };
 
-// @desc   Delete a note
-// @route  DELETE /api/jobs/:id/notes/:noteId
-// @access Private
+
 const deleteNote = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -85,14 +68,6 @@ const deleteNote = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error deleting note' });
   }
 };
-
-// ════════════════════════════════════════════════════════════════════════════
-// INTERVIEW QUESTIONS
-// ════════════════════════════════════════════════════════════════════════════
-
-// @desc   Add an interview question
-// @route  POST /api/jobs/:id/questions/
-// @access Private
 const addQuestion = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -116,9 +91,6 @@ const addQuestion = async (req, res) => {
   }
 };
 
-// @desc   Delete an interview question by index
-// @route  DELETE /api/jobs/:id/questions/:index
-// @access Private
 const deleteQuestion = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -139,13 +111,6 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
-// ════════════════════════════════════════════════════════════════════════════
-// DOCUMENTS
-// ════════════════════════════════════════════════════════════════════════════
-
-// @desc   Add a document reference
-// @route  POST /api/jobs/:id/documents/
-// @access Private
 const addDocument = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);
@@ -167,9 +132,7 @@ const addDocument = async (req, res) => {
   }
 };
 
-// @desc   Delete a document reference
-// @route  DELETE /api/jobs/:id/documents/:docId
-// @access Private
+
 const deleteDocument = async (req, res) => {
   try {
     const job = await findOwnedJob(req.params.id, req.user._id);

@@ -14,7 +14,6 @@ export function AuthProvider({ children }) {
   });
   const [loading, setLoading] = useState(true);
 
-  // Verify token on mount
   useEffect(() => {
     const token = localStorage.getItem('jt_token');
     if (!token) {

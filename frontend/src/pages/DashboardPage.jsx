@@ -90,12 +90,10 @@ export default function DashboardPage() {
         </Link>
       </div>
 
-      {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         {statCards.map(card => <StatCard key={card.label} {...card} />)}
       </div>
 
-      {/* Progress bar */}
       {stats.total > 0 && (
         <div className="card p-5">
           <div className="flex items-center justify-between mb-3">
@@ -125,7 +123,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Recent applications */}
       <div>
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-sm font-semibold text-slate-300 uppercase tracking-wide">Recent Applications</h2>

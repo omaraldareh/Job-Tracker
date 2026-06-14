@@ -5,7 +5,6 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Attach JWT token to every request
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('jt_token');
@@ -17,7 +16,6 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Handle 401 globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -30,14 +28,12 @@ api.interceptors.response.use(
   }
 );
 
-// ─── Auth ────────────────────────────────────────────────────────────────────
 export const authApi = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
   getMe: () => api.get('/auth/me'),
 };
 
-// ─── Jobs ────────────────────────────────────────────────────────────────────
 export const jobsApi = {
   getAll: (params) => api.get('/jobs', { params }),
   getOne: (id) => api.get(`/jobs/${id}`),
@@ -48,21 +44,16 @@ export const jobsApi = {
 
 export default api;
 
-// ─── Job Details (notes / questions / documents) ──────────────────────────────
 export const jobDetailsApi = {
-  // Notes
   addNote:    (jobId, data)           => api.post(`/jobs/${jobId}/notes`, data),
   updateNote: (jobId, noteId, data)   => api.put(`/jobs/${jobId}/notes/${noteId}`, data),
   deleteNote: (jobId, noteId)         => api.delete(`/jobs/${jobId}/notes/${noteId}`),
-  // Interview questions
   addQuestion:    (jobId, data)       => api.post(`/jobs/${jobId}/questions`, data),
   deleteQuestion: (jobId, idx)        => api.delete(`/jobs/${jobId}/questions/${idx}`),
-  // Documents
   addDocument:    (jobId, data)       => api.post(`/jobs/${jobId}/documents`, data),
   deleteDocument: (jobId, docId)      => api.delete(`/jobs/${jobId}/documents/${docId}`),
 };
 
-// ─── Analytics ────────────────────────────────────────────────────────────────
 export const analyticsApi = {
   get: () => api.get('/analytics'),
 };

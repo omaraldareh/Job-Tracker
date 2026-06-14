@@ -8,7 +8,6 @@ import {
 import { analyticsApi } from '../api';
 import Spinner from '../components/common/Spinner';
 
-// ─── Colour palette (matches dark theme) ─────────────────────────────────────
 const STATUS_COLORS = {
   Applied:   '#60a5fa', // blue-400
   Interview: '#fbbf24', // amber-400
@@ -18,7 +17,6 @@ const STATUS_COLORS = {
 
 const CHART_COLORS = ['#818cf8', '#60a5fa', '#34d399', '#fbbf24', '#f87171', '#c084fc', '#fb923c', '#a3e635'];
 
-// ─── Shared styles ────────────────────────────────────────────────────────────
 const TOOLTIP_STYLE = {
   backgroundColor: '#16162a',
   border: '1px solid #1e1e3f',
@@ -29,7 +27,6 @@ const TOOLTIP_STYLE = {
 
 const AXIS_STYLE = { fill: '#64748b', fontSize: 11 };
 
-// ─── KPI Card ─────────────────────────────────────────────────────────────────
 function KpiCard({ label, value, sub, color }) {
   return (
     <div className="card p-5">
@@ -40,7 +37,6 @@ function KpiCard({ label, value, sub, color }) {
   );
 }
 
-// ─── Chart wrapper card ───────────────────────────────────────────────────────
 function ChartCard({ title, children, className = '' }) {
   return (
     <div className={`card p-5 ${className}`}>
@@ -50,7 +46,6 @@ function ChartCard({ title, children, className = '' }) {
   );
 }
 
-// ─── Custom tooltip ───────────────────────────────────────────────────────────
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
   return (
@@ -65,7 +60,6 @@ const CustomTooltip = ({ active, payload, label }) => {
   );
 };
 
-// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function AnalyticsPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -88,7 +82,6 @@ export default function AnalyticsPage() {
 
   const { kpis, statusBreakdown, applicationsPerMonth, topCompanies } = data;
 
-  // Pie data
   const pieData = statusBreakdown.map(({ status, count }) => ({
     name: status,
     value: count,
@@ -97,13 +90,11 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* Header */}
       <div>
         <h1 className="text-2xl font-bold text-white">Analytics</h1>
         <p className="text-slate-400 text-sm mt-1">Insights across your entire job search</p>
       </div>
 
-      {/* KPI row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <KpiCard label="Total Apps"     value={kpis.total}         color="text-white" />
         <KpiCard label="In Pipeline"    value={kpis.applied}       color="text-blue-400"
@@ -116,7 +107,6 @@ export default function AnalyticsPage() {
           sub={`${kpis.total ? Math.round((kpis.rejected / kpis.total) * 100) : 0}% of total`} />
       </div>
 
-      {/* Success rate highlight */}
       <div className="card p-5 flex flex-col sm:flex-row sm:items-center gap-4">
         <div className="flex-1">
           <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Overall Success Rate</p>
@@ -142,9 +132,7 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* Charts row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Applications per month — spans 2 cols */}
         <ChartCard title="Applications Per Month" className="lg:col-span-2">
           <ResponsiveContainer width="100%" height={220}>
             <BarChart data={applicationsPerMonth} barSize={18}>
@@ -157,7 +145,6 @@ export default function AnalyticsPage() {
           </ResponsiveContainer>
         </ChartCard>
 
-        {/* Status breakdown — pie */}
           <ChartCard title="By Status">
             {pieData.length === 0 ? (
               <div className="h-[260px] flex items-center justify-center text-slate-500 text-sm">
@@ -237,9 +224,7 @@ export default function AnalyticsPage() {
           </ChartCard>
       </div>
 
-      {/* Charts row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* Top companies */}
         <ChartCard title="Most Applied Companies">
           {topCompanies.length === 0 ? (
             <div className="h-[200px] flex items-center justify-center text-slate-500 text-sm">No data yet</div>
@@ -261,7 +246,6 @@ export default function AnalyticsPage() {
           )}
         </ChartCard>
 
-        {/* Cumulative trend */}
         <ChartCard title="Cumulative Applications Trend">
           {(() => {
             let cum = 0;

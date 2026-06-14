@@ -1,11 +1,3 @@
-/**
- * Email Service (Nodemailer)
- *
- * Configured for Brevo SMTP Relay (smtp-relay.brevo.com:587, STARTTLS).
- * Transporter is created lazily, verified on first use, and pooled with
- * conservative rate limits so cron batch-sends don't trigger Brevo's
- * per-connection / per-second throttling.
- */
 const nodemailer = require('nodemailer');
 
 let _transporter = null;
@@ -32,13 +24,11 @@ const getTransporter = () => {
 
 
     pool: true,
-    maxConnections: 1,   // one connection at a time — avoids "too many connections" errors
-    maxMessages: 50,     // reconnect after 50 messages on this connection
-    rateDelta: 1000,     // 1 second window
-    rateLimit: 1,        // max 1 message per `rateDelta` — safe default for Brevo free/shared IP
+    maxConnections: 1,   
+    maxMessages: 50,     
+    rateDelta: 1000,     
   });
 
-  // Verify credentials + connectivity once, asynchronously, without blocking startup
   _transporter.verify((err) => {
     if (err) {
       console.error('❌ SMTP transporter verification failed:', err.message);
@@ -51,14 +41,13 @@ const getTransporter = () => {
 };
 
 /**
- * Send a follow-up reminder email.
  * @param {object} opts
- * @param {string} opts.to         - recipient email
- * @param {string} opts.userName   - recipient name
- * @param {string} opts.company    - company name
- * @param {string} opts.position   - job position
- * @param {number} opts.daysSince  - days since last status change
- * @returns {Promise<boolean>} true if accepted by the SMTP server
+ * @param {string} opts.to         
+ * @param {string} opts.userName   
+ * @param {string} opts.company    
+ * @param {string} opts.position   
+ * @param {number} opts.daysSince  
+ * @returns {Promise<boolean>} 
  */
 const sendReminderEmail = async ({ to, userName, company, position, daysSince }) => {
   const transporter = getTransporter();
@@ -67,7 +56,6 @@ const sendReminderEmail = async ({ to, userName, company, position, daysSince })
   const fromName = process.env.EMAIL_FROM_NAME || 'JobTrackr';
   const fromAddr = process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER;
 
-  // تصميم رسالة بسيط وواضح بدون روابط
   const html = `<!DOCTYPE html><html><head>
   <meta charset="utf-8"/>
   <style>

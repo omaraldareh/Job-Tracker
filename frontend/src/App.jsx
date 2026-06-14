@@ -7,8 +7,8 @@ import DashboardPage from './pages/DashboardPage';
 import JobsPage from './pages/JobsPage';
 import AddJobPage from './pages/AddJobPage';
 import EditJobPage from './pages/EditJobPage';
-import JobDetailPage from './pages/JobDetailPage';   // Feature 1
-import AnalyticsPage from './pages/AnalyticsPage';   // Feature 2
+import JobDetailPage from './pages/JobDetailPage';    
+import AnalyticsPage from './pages/AnalyticsPage';   
 
 export default function App() {
   return (
@@ -20,21 +20,18 @@ export default function App() {
   }}
       >
         <Routes>
-          {/* Public Routes */}
           <Route path="/login"    element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* Protected Routes (All wrapped inside ProtectedLayout) */}
           <Route element={<ProtectedLayout />}>
             <Route path="/dashboard"         element={<DashboardPage />} />
             <Route path="/jobs"              element={<JobsPage />} />
             <Route path="/jobs/new"          element={<AddJobPage />} />
-            <Route path="/jobs/:id"          element={<JobDetailPage />} />   {/* Feature 1 */}
+            <Route path="/jobs/:id"          element={<JobDetailPage />} />  
             <Route path="/jobs/:id/edit"     element={<EditJobPage />} />
-            <Route path="/analytics"         element={<AnalyticsPage />} />  {/* Feature 2 */}
+            <Route path="/analytics"         element={<AnalyticsPage />} />  
           </Route>
 
-          {/* Fallbacks */}
           <Route path="/"  element={<Navigate to="/dashboard" replace />} />
           <Route path="*"  element={<Navigate to="/dashboard" replace />} />
         </Routes>

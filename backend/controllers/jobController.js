@@ -1,8 +1,6 @@
 ﻿const Job = require('../models/Job');
 
-// @desc    Get all jobs for current user
-// @route   GET /api/jobs
-// @access  Private
+
 const getJobs = async (req, res) => {
   try {
     const { status, search, page = 1, limit = 50 } = req.query;
@@ -27,7 +25,6 @@ const getJobs = async (req, res) => {
       Job.countDocuments(query),
     ]);
 
-    // Dashboard stats (always for all user jobs, ignoring filters)
     const stats = await Job.aggregate([
       { $match: { user: req.user._id } },
       {
@@ -64,9 +61,6 @@ const getJobs = async (req, res) => {
   }
 };
 
-// @desc    Get single job
-// @route   GET /api/jobs/:id
-// @access  Private
 const getJob = async (req, res) => {
   try {
     const job = await Job.findOne({ _id: req.params.id, user: req.user._id });
@@ -81,9 +75,6 @@ const getJob = async (req, res) => {
   }
 };
 
-// @desc    Create a new job
-// @route   POST /api/jobs
-// @access  Private
 const createJob = async (req, res) => {
   try {
     const { company, position, location, salary, jobUrl, notes, status, appliedDate } = req.body;
@@ -107,9 +98,6 @@ const createJob = async (req, res) => {
   }
 };
 
-// @desc    Update a job
-// @route   PUT /api/jobs/:id
-// @access  Private
 const updateJob = async (req, res) => {
   try {
     let job = await Job.findOne({ _id: req.params.id, user: req.user._id });
@@ -129,10 +117,6 @@ const updateJob = async (req, res) => {
     res.status(500).json({ success: false, message: 'Error updating job' });
   }
 };
-
-// @desc    Delete a job
-// @route   DELETE /api/jobs/:id
-// @access  Private
 const deleteJob = async (req, res) => {
   try {
     const job = await Job.findOne({ _id: req.params.id, user: req.user._id });

@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-// 1. Schema للـ Notes (نظام الملاحظات)
 const noteSchema = new mongoose.Schema(
   {
     text: {
@@ -13,7 +11,6 @@ const noteSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// 2. Schema للـ Documents (نظام الملفات)
 const documentSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
   fileType: { type: String, trim: true, default: '' },
@@ -21,14 +18,13 @@ const documentSchema = new mongoose.Schema({
   url: { type: String, trim: true, default: '' },
 });
 
-// 3. الـ Schema الأساسي للـ Job
 const jobSchema = new mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      index: true, // ضروري جداً للبحث السريع
+      index: true, 
     },
     company: {
       type: String,
@@ -75,11 +71,10 @@ const jobSchema = new mongoose.Schema(
     }],
     documents: [documentSchema],
     
-    // حقول التذكير الذكية
     lastStatusChange: {
       type: Date,
       default: Date.now,
-      index: true, // مهم جداً للـ Cron Job
+      index: true, 
     },
     reminderSentAt: {
       type: Date,
@@ -89,14 +84,6 @@ const jobSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware: تحديث التاريخ تلقائياً عند تغيير الحالة
-// jobSchema.pre('save', function (next) {
-//   if (this.isModified('status')) {
-//     this.lastStatusChange = new Date();
-//     this.reminderSentAt = null; // إعادة ضبط التذكير عند تغيير الحالة
-//   }
-//   next();
-// });
 
 const Job = mongoose.model('Job', jobSchema);
 

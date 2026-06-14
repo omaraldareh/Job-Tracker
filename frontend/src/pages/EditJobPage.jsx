@@ -45,7 +45,6 @@ export default function EditJobPage() {
         </div>
       )}
 
-      {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
         <Link to="/jobs" className="hover:text-slate-300 transition-colors">Applications</Link>
         <span>/</span>

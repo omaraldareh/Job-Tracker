@@ -63,7 +63,6 @@ export default function JobsPage() {
         </div>
       )}
 
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white">Applications</h1>
@@ -79,7 +78,6 @@ export default function JobsPage() {
         </Link>
       </div>
 
-      {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -101,7 +99,6 @@ export default function JobsPage() {
         </div>
       </div>
 
-      {/* List */}
       {loading ? (
         <div className="flex justify-center py-20"><Spinner size="lg" className="text-brand-500" /></div>
       ) : jobs.length === 0 ? (
@@ -122,18 +119,18 @@ export default function JobsPage() {
       ) : (
         <div className="card overflow-hidden">
           <div className="hidden sm:grid grid-cols-12 gap-4 px-5 py-3 text-xs font-medium text-slate-500 uppercase tracking-wide border-b border-surface-border">
-            <div className="col-span-4">Role & Company</div>
+            <div className="col-span-3">Role & Company</div>
             <div className="col-span-2">Location</div>
-            <div className="col-span-2">Salary</div>
+            <div className="col-span-1">Salary</div>
             <div className="col-span-2">Status</div>
             <div className="col-span-1">Applied</div>
+            <div className="col-span-2">Notes</div>
             <div className="col-span-1 text-right">Actions</div>
           </div>
           <div className="divide-y divide-surface-border">
             {jobs.map(job => (
               <div key={job._id} className="grid grid-cols-1 sm:grid-cols-12 gap-2 sm:gap-4 px-5 py-4 hover:bg-surface-muted/30 transition-colors items-center group">
-                {/* Company + Position — clicking goes to detail page */}
-                <Link to={`/jobs/${job._id}`} className="sm:col-span-4 flex items-center gap-3 min-w-0">
+                <Link to={`/jobs/${job._id}`} className="sm:col-span-3 flex items-center gap-3 min-w-0">
                   <div className="w-9 h-9 rounded-lg bg-surface-muted flex items-center justify-center flex-shrink-0 text-sm font-semibold text-slate-300 group-hover:bg-brand-600/20 group-hover:text-brand-300 transition-colors">
                     {job.company.charAt(0).toUpperCase()}
                   </div>
@@ -143,9 +140,24 @@ export default function JobsPage() {
                   </div>
                 </Link>
                 <div className="sm:col-span-2"><p className="text-xs text-slate-400 truncate">{job.location}</p></div>
-                <div className="sm:col-span-2"><p className="text-xs text-slate-500 truncate">{job.salary || '—'}</p></div>
+                <div className="sm:col-span-1"><p className="text-xs text-slate-500 truncate">{job.salary || '—'}</p></div>
                 <div className="sm:col-span-2"><StatusBadge status={job.status} /></div>
                 <div className="sm:col-span-1"><p className="text-xs text-slate-600">{formatDate(job.appliedDate)}</p></div>
+                <div className="sm:col-span-2">
+                  <Link
+                    to={`/jobs/${job._id}`}
+                    className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors w-full sm:w-auto justify-center ${
+                      job.notes
+                        ? 'bg-brand-600/10 text-brand-300 border-brand-600/30 hover:bg-brand-600/20 hover:border-brand-500/50'
+                        : 'bg-surface-muted text-slate-400 border-surface-border hover:text-white hover:border-slate-500'
+                    }`}
+                  >
+                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V6a2 2 0 012-2h5.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V18a2 2 0 01-2 2z" />
+                    </svg>
+                    View/Add
+                  </Link>
+                </div>
                 <div className="sm:col-span-1 flex items-center justify-end gap-1">
                   {job.jobUrl && (
                     <a href={job.jobUrl} target="_blank" rel="noopener noreferrer"
