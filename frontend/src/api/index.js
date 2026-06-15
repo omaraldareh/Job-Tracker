@@ -1,8 +1,9 @@
 ﻿import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '/api',
-  headers: { 'Content-Type': 'application/json' },
+baseURL: import.meta.env.VITE_API_URL || 'https://job-tracker-api-dic5.onrender.com',
+headers: { 'Content-Type': 'application/json' },
+withCredentials: true,
 });
 
 api.interceptors.request.use(
